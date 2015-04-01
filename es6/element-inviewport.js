@@ -1,15 +1,12 @@
 function viewportwatcher() {
 
-    'use strict';
-
     var _isWatching = false,
 
         // elements currently in viewport
         _listVPIn = [], 
 
         // elements out of viewport
-        _listVPOut = [], 
-
+        _listVPOut = [],
 
         // true if element in viewport      
         _isInView = function(element) {
@@ -18,9 +15,9 @@ function viewportwatcher() {
 
             return (
                 bounds.top >= 0 &&
-                bounds.left >= 0 &&
-                bounds.bottom <= window.innerHeight &&
-                bounds.right <= window.innerWidth
+                // bounds.left >= 0 &&
+                // bounds.right <= window.innerWidth &&
+                bounds.bottom <= window.innerHeight
             );
 
         },
@@ -46,14 +43,11 @@ function viewportwatcher() {
         },
 
         // tell errrbodoy the element entered the viewport
-        _broadcastElementIn = function(element) {
-            element.dispatchEvent(new CustomEvent("inview:entered", {bubbles: true}));
-        },
+        _broadcastElementIn = element => element.dispatchEvent( new CustomEvent("inview:entered", { bubbles: true } )),
 
         // tell errrbodoy the element left the viewport
-        _broadcastElementOut = function(element) {
-            element.dispatchEvent(new CustomEvent("inview:exited", {bubbles: true} ));
-        },
+        _broadcastElementOut = element => element.dispatchEvent(new CustomEvent("inview:exited", { bubbles: true } )),
+
 
         // stop watching scroll and stuff if there are no elements to watch
         _registerWatchListChange = function() {
@@ -71,22 +65,34 @@ function viewportwatcher() {
         // add event listeners to the likes of window scroll
         _attach = function(){
             _isWatching = true;
-            ['scroll', 'hashchange', 'touchmove', 'resize'].forEach( function(ev){
-                window.addEventListener(ev, _check);
+            ['scroll', 'hashchange', 'touchend', 'resize'].forEach( function(ev){
+                window.addEventListener(ev, _throttleCheck);
             });
         },
 
         // remove event listeners to the likes of window scroll
         _detach = function(){
             _isWatching = false;
-            ['scroll', 'hashchange', 'touchmove', 'resize'].forEach( function(ev){
-                window.removeEventListener(ev, _check);
+            ['scroll', 'hashchange', 'touchend', 'resize'].forEach( function(ev){
+                window.removeEventListener(ev, _throttleCheck);
             });
+        },
+
+
+        // throttle timer
+        _timer = null, 
+
+        // throttle the checking
+        _throttleCheck = function() {
+            clearTimeout(_timer);
+            _timer = setTimeout(_check, 50);
         },
 
 
         // what to execute while scrolling / moving viewport location
         _check = function() {
+
+            console.log('checking...');
 
             var element,
                 newin = [],
@@ -163,23 +169,26 @@ function viewportwatcher() {
 
 }
 
+window.addEventListener('load', function(){
 
-[].forEach.call( document.querySelectorAll('img:last-child'), function(img){
+    [].forEach.call( document.querySelectorAll('img:nth-child(17), img:last-child'), function(img){
 
-  
+        img.addEventListener('inview:entered', function(){
+            img.classList.add('active');
+            console.log('entered');
+        });
 
-
-  img.addEventListener('inview:entered', function(){
-     img.classList.add('active');
-      console.log('entered');
-  });
-
-  img.addEventListener('inview:exited', function(){
-    img.classList.remove('active');
-          console.log('exited');
-  });
+        img.addEventListener('inview:exited', function(){
+            img.classList.remove('active');
+            console.log('exited');
+        });
 
 
-  viewportwatcher().add(img);
+        viewportwatcher().add(img);
+        
+    });
+
+
+
 });
 
