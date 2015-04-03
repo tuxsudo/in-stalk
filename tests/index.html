@@ -287,6 +287,45 @@ img.active {
 
 
 <script src="../es5/element-inviewport.min.js"></script>
+<script>
+window.addEventListener('load', function(){
+
+  [].forEach.call( document.querySelectorAll('img:nth-child(17), img:nth-child(56), img:last-child'), function(img){
+
+      img.addEventListener('viewport:in', function(){
+          img.classList.add('active');
+      });
+
+      img.addEventListener('viewport:out', function(){
+          img.classList.remove('active');
+      });
+
+
+      viewportwatcher.add(img);
+      
+  });
+
+
+  [].forEach.call( document.querySelectorAll('img:nth-child(1)' ), function(img){
+
+      img.addEventListener('viewport:in', function(){
+          img.classList.add('active');
+      });
+
+      img.addEventListener('viewport:out', function(){
+          img.classList.remove('active');
+          viewportwatcher.remove(img);
+      });
+
+
+      viewportwatcher.add(img);
+      
+  });
+
+
+
+});
+</script>
 
 </body>
 </html>

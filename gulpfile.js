@@ -8,13 +8,13 @@ gulp.task('default', ['es5', 'commonjs']);
 
 gulp.task('es5', ['clean', 'lint'],  function () {
 
-    return gulp.src('es6/*.js')
+    return gulp.src('lib/*.js')
         .pipe($.es6ModuleTranspiler({
             formatter: 'bundle'
         }))
         .pipe( $.babel() )
         .pipe($.flatten())
-        .pipe( $.rename(function(path){ path.basename = path.basename.replace('init', 'element-inviewport'); }) )
+        .pipe( $.rename(function(path){ path.basename = 'element-inviewport'; }) )
         .pipe( gulp.dest('es5') )
         .pipe( $.uglify() )
         .pipe( $.rename(function(path){ path.basename+=".min"; }) )

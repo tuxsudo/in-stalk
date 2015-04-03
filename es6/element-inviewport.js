@@ -1,4 +1,4 @@
-function viewportwatcher() {
+export var viewportwatcher = (function() {
 
     var isWatching = false,
 
@@ -100,30 +100,8 @@ function viewportwatcher() {
         }
 
     };
+    
 
+})();
 
-}
-
-window.addEventListener('load', function(){
-
-    [].forEach.call( document.querySelectorAll('img:nth-child(17), img:nth-child(56), img:last-child'), function(img){
-
-        img.addEventListener('viewport:in', function(){
-            img.classList.add('active');
-            console.log('entered');
-        });
-
-        img.addEventListener('viewport:out', function(){
-            img.classList.remove('active');
-            console.log('exited');
-        });
-
-
-        viewportwatcher().add(img);
-        
-    });
-
-
-
-});
 
