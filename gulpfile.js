@@ -28,7 +28,7 @@ gulp.task('commonjs', ['clean', 'lint'],  function () {
 
     return gulp.src('es6/*.js')
         .pipe( $.babel() )
-        .pipe( $.rename(function(path) { path.basename = 'element-inviewport.' + path.basename; }) )
+        .pipe( $.rename(function(path) { path.basename = 'element-inviewport' }) )
         .pipe( gulp.dest('commonjs') );
 
 });

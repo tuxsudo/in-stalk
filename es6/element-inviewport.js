@@ -1,4 +1,4 @@
-export var viewportwatcher = (function() {
+export default (function() {
 
     var isWatching = false,
 
@@ -7,14 +7,10 @@ export var viewportwatcher = (function() {
 
         // true if element in viewport      
         isInView = function(element) {
-
             var bounds = element.getBoundingClientRect();
 
-            return (
-                bounds.top >= 0 &&
-                bounds.bottom <= window.innerHeight
-            );
-
+            return (bounds.top >= 0 && bounds.top<=window.innerHeight) ||
+                (bounds.bottom >=0 && bounds.bottom <= window.innerHeight);
         },
 
         // tell errrbody the element entered / exited the viewport
