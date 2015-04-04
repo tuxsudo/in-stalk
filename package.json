@@ -1,6 +1,6 @@
 {
   "name": "element-inviewport",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Fires events with element enters/exits viewport",
   "main": "index.js",
   "scripts": {

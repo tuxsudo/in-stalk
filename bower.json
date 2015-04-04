@@ -1,0 +1,28 @@
+{
+  "name": "element-inviewport",
+  "version": "1.0.0",
+  "homepage": "https://github.com/TuxSudo/element-inviewport",
+  "authors": [
+    "Jared Anderson <jared@tuxsudo.com>"
+  ],
+  "description": "Fire events when elements enter and exit the view port.",
+  "main": "es5/element-inviewport.min.js",
+  "moduleType": [
+    "es6",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "viewport",
+    "dom",
+    "htmlelement"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
