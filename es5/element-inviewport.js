@@ -10,11 +10,18 @@
         // watched elements
         watchedItems = [],
 
+        // standard events to listen for (at window level)
+        standardEvents = ["scroll", "hashchange", "touchend", "resize"],
+
+        // watch (at window level) for these custom events that may also change if an element is in the view port
+        // typically events causing elements display to toggle.
+        customEvents = [],
+
         // true if element in viewport
         isInView = function isInView(element) {
             var bounds = element.getBoundingClientRect();
 
-            return bounds.width && bounds.height && (bounds.top >= 0 && bounds.top <= window.innerHeight || bounds.bottom >= 0 && bounds.bottom <= window.innerHeight);
+            return element.offsetParent !== null && (bounds.bottom >= 0 && bounds.top <= window.innerHeight) && (bounds.right >= 0 && bounds.left <= window.innerWidth);
         },
 
         // tell errrbody the element entered / exited the viewport
@@ -35,16 +42,16 @@
         // add event listeners to the likes of window scroll
         attachListener = function attachListener() {
             isWatching = true;
-            ["scroll", "hashchange", "touchend", "resize"].forEach(function (ev) {
-                window.addEventListener(ev, checkItems);
+            standardEvents.concat(customEvents).forEach(function (ev) {
+                return window.addEventListener(ev, checkItems);
             });
         },
 
         // remove event listeners to the likes of window scroll
         detachListener = function detachListener() {
             isWatching = false;
-            ["scroll", "hashchange", "touchend", "resize"].forEach(function (ev) {
-                window.removeEventListener(ev, checkItems);
+            standardEvents.concat(customEvents).forEach(function (ev) {
+                return window.removeEventListener(ev, checkItems);
             });
         },
 
@@ -90,6 +97,20 @@
                 }
 
                 return false;
+            },
+
+            addListener: function addListener(eventName) {
+                detachListener();
+                customEvents.push(eventName);
+                registerWatchListChange();
+            },
+
+            removeListener: function removeListener(eventName) {
+                detachListener();
+                customEvents = customEvents.filter(function (ev) {
+                    return ev !== eventName;
+                });
+                registerWatchListChange();
             }
 
         };
