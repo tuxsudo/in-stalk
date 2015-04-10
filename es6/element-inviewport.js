@@ -5,12 +5,12 @@ export default (function() {
         // watched elements
         watchedItems = [],
 
-        // true if element in viewport      
+        // true if element in viewport
         isInView = function(element) {
             var bounds = element.getBoundingClientRect();
 
-            return (bounds.top >= 0 && bounds.top<=window.innerHeight) ||
-                (bounds.bottom >=0 && bounds.bottom <= window.innerHeight);
+            return bounds.width && bounds.height && ((bounds.top >= 0 && bounds.top<=window.innerHeight) ||
+                (bounds.bottom >=0 && bounds.bottom <= window.innerHeight) );
         },
 
         // tell errrbody the element entered / exited the viewport
@@ -54,7 +54,7 @@ export default (function() {
                 if(item.status ==='in' && !isInView( item.element ) ) {
                     broadcastElementStatus(item.element, 'out');
                     item.status = 'out';
-        
+
                 } else if(item.status==='out' && isInView(item.element) ) {
                     broadcastElementStatus(item.element, 'in');
                     item.status = 'in';
@@ -78,7 +78,7 @@ export default (function() {
             watchedItems.push(config);
             broadcastElementStatus( element, config.status );
             registerWatchListChange();
-            
+
         },
 
         // remove an element from stalk list
@@ -96,7 +96,7 @@ export default (function() {
         }
 
     };
-    
+
 
 })();
 

@@ -7,11 +7,11 @@ module.exports = (function () {
     // watched elements
     watchedItems = [],
 
-    // true if element in viewport     
+    // true if element in viewport
     isInView = function isInView(element) {
         var bounds = element.getBoundingClientRect();
 
-        return bounds.top >= 0 && bounds.top <= window.innerHeight || bounds.bottom >= 0 && bounds.bottom <= window.innerHeight;
+        return bounds.width && bounds.height && (bounds.top >= 0 && bounds.top <= window.innerHeight || bounds.bottom >= 0 && bounds.bottom <= window.innerHeight);
     },
 
     // tell errrbody the element entered / exited the viewport
