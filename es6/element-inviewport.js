@@ -1,3 +1,30 @@
+function throttle(fn, threshhold, scope) {
+
+    var last,
+        deferTimer,
+        rate = threshhold || 150;
+
+    return function () {
+        var context = scope || this,
+            now = +new Date(),
+            args = arguments;
+    
+        if (last && now < last + rate) {
+      
+            // hold on to it
+            clearTimeout(deferTimer);
+            deferTimer = setTimeout(function () {
+                last = now;
+                fn.apply(context, args);
+            }, rate);
+        } else {
+            last = now;
+            fn.apply(context, args);
+        }
+    };
+}
+
+
 export default (function() {
 
     var isWatching = false,
@@ -40,17 +67,20 @@ export default (function() {
         // add event listeners to the likes of window scroll
         attachListener = function(){
             isWatching = true;
-            standardEvents.concat(customEvents).forEach( ev  => window.addEventListener(ev, checkItems) );
+            standardEvents.concat(customEvents).forEach( ev  => window.addEventListener(ev, effecientCheck) );
         },
 
         // remove event listeners to the likes of window scroll
         detachListener = function(){
             isWatching = false;
-            standardEvents.concat(customEvents).forEach( ev => window.removeEventListener(ev, checkItems) );
+            standardEvents.concat(customEvents).forEach( ev => window.removeEventListener(ev, effecientCheck) );
         },
 
+
+        chks = 0,
         // what to execute while scrolling / moving viewport location
         checkItems = function() {
+            console.log(++chks);
 
             watchedItems.forEach( function( item ) {
 
@@ -65,7 +95,9 @@ export default (function() {
 
             });
 
-        };
+        },
+
+        effecientCheck = throttle(checkItems);
 
 
 

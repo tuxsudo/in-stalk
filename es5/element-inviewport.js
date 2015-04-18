@@ -2,6 +2,31 @@
 
 (function () {
     "use strict";
+    function $$$es6$element$inviewport$$throttle(fn, threshhold, scope) {
+
+        var last,
+            deferTimer,
+            rate = threshhold || 150;
+
+        return function () {
+            var context = scope || this,
+                now = +new Date(),
+                args = arguments;
+
+            if (last && now < last + rate) {
+
+                // hold on to it
+                clearTimeout(deferTimer);
+                deferTimer = setTimeout(function () {
+                    last = now;
+                    fn.apply(context, args);
+                }, rate);
+            } else {
+                last = now;
+                fn.apply(context, args);
+            }
+        };
+    }
 
     var $$$es6$element$inviewport$$default = (function () {
 
@@ -43,7 +68,7 @@
         attachListener = function attachListener() {
             isWatching = true;
             standardEvents.concat(customEvents).forEach(function (ev) {
-                return window.addEventListener(ev, checkItems);
+                return window.addEventListener(ev, effecientCheck);
             });
         },
 
@@ -51,12 +76,14 @@
         detachListener = function detachListener() {
             isWatching = false;
             standardEvents.concat(customEvents).forEach(function (ev) {
-                return window.removeEventListener(ev, checkItems);
+                return window.removeEventListener(ev, effecientCheck);
             });
         },
+            chks = 0,
 
         // what to execute while scrolling / moving viewport location
         checkItems = function checkItems() {
+            console.log(++chks);
 
             watchedItems.forEach(function (item) {
 
@@ -68,7 +95,8 @@
                     item.status = "in";
                 }
             });
-        };
+        },
+            effecientCheck = $$$es6$element$inviewport$$throttle(checkItems);
 
         return {
 
