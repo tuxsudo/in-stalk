@@ -8,7 +8,7 @@ module.exports = (function () {
     watchedItems = [],
 
     // standard events to listen for (at window level)
-    standardEvents = ["scroll", "hashchange", "touchend", "resize"],
+    standardEvents = ["orientationchange", "scroll", "hashchange", "touchend", "resize"],
 
     // watch (at window level) for these custom events that may also change if an element is in the view port
     // typically events causing elements display to toggle.
@@ -36,11 +36,23 @@ module.exports = (function () {
         }
     },
 
+    // debounce with me...debounce with me ♪♪
+    ticking = false,
+        debounceCheck = function debounceCheck() {
+        requestTick();
+    },
+        requestTick = function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(checkItems);
+        }
+        ticking = true;
+    },
+
     // add event listeners to the likes of window scroll
     attachListener = function attachListener() {
         isWatching = true;
         standardEvents.concat(customEvents).forEach(function (ev) {
-            return window.addEventListener(ev, checkItems);
+            return window.addEventListener(ev, debounceCheck);
         });
     },
 
@@ -48,12 +60,14 @@ module.exports = (function () {
     detachListener = function detachListener() {
         isWatching = false;
         standardEvents.concat(customEvents).forEach(function (ev) {
-            return window.removeEventListener(ev, checkItems);
+            return window.removeEventListener(ev, debounceCheck);
         });
     },
 
     // what to execute while scrolling / moving viewport location
     checkItems = function checkItems() {
+
+        ticking = false;
 
         watchedItems.forEach(function (item) {
 
