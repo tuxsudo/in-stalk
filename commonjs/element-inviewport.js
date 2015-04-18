@@ -1,5 +1,21 @@
 "use strict";
 
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+        var context = this,
+            args = arguments;
+        var later = function later() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
 module.exports = (function () {
 
     var isWatching = false,
@@ -35,26 +51,12 @@ module.exports = (function () {
             detachListener();
         }
     },
-
-    // add event listeners to the likes of window scroll
-    attachListener = function attachListener() {
-        isWatching = true;
-        standardEvents.concat(customEvents).forEach(function (ev) {
-            return window.addEventListener(ev, checkItems);
-        });
-    },
-
-    // remove event listeners to the likes of window scroll
-    detachListener = function detachListener() {
-        isWatching = false;
-        standardEvents.concat(customEvents).forEach(function (ev) {
-            return window.removeEventListener(ev, checkItems);
-        });
-    },
+        chks = 0,
 
     // what to execute while scrolling / moving viewport location
     checkItems = function checkItems() {
 
+        console.log(++chks);
         watchedItems.forEach(function (item) {
 
             if (item.status === "in" && !isInView(item.element)) {
@@ -64,6 +66,23 @@ module.exports = (function () {
                 broadcastElementStatus(item.element, "in");
                 item.status = "in";
             }
+        });
+    },
+        effecientCheck = debounce(checkItems, 250),
+
+    // add event listeners to the likes of window scroll
+    attachListener = function attachListener() {
+        isWatching = true;
+        standardEvents.concat(customEvents).forEach(function (ev) {
+            return window.addEventListener(ev, effecientCheck);
+        });
+    },
+
+    // remove event listeners to the likes of window scroll
+    detachListener = function detachListener() {
+        isWatching = false;
+        standardEvents.concat(customEvents).forEach(function (ev) {
+            return window.removeEventListener(ev, effecientCheck);
         });
     };
 

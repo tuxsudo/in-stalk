@@ -1,3 +1,20 @@
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
+
+
 export default (function() {
 
     var isWatching = false,
@@ -37,21 +54,12 @@ export default (function() {
 
         },
 
-        // add event listeners to the likes of window scroll
-        attachListener = function(){
-            isWatching = true;
-            standardEvents.concat(customEvents).forEach( ev  => window.addEventListener(ev, checkItems) );
-        },
+        chks = 0,
 
-        // remove event listeners to the likes of window scroll
-        detachListener = function(){
-            isWatching = false;
-            standardEvents.concat(customEvents).forEach( ev => window.removeEventListener(ev, checkItems) );
-        },
-
-        // what to execute while scrolling / moving viewport location
+         // what to execute while scrolling / moving viewport location
         checkItems = function() {
 
+            console.log(++chks);
             watchedItems.forEach( function( item ) {
 
                 if(item.status ==='in' && !isInView( item.element ) ) {
@@ -65,6 +73,20 @@ export default (function() {
 
             });
 
+        },
+
+        effecientCheck = debounce(checkItems, 250),
+
+        // add event listeners to the likes of window scroll
+        attachListener = function(){
+            isWatching = true;
+            standardEvents.concat(customEvents).forEach( ev  => window.addEventListener(ev, effecientCheck) );
+        },
+
+        // remove event listeners to the likes of window scroll
+        detachListener = function(){
+            isWatching = false;
+            standardEvents.concat(customEvents).forEach( ev => window.removeEventListener(ev, effecientCheck) );
         };
 
 
