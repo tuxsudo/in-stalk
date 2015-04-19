@@ -94,7 +94,7 @@ module.exports = (function () {
             }
         });
     },
-        effecientCheck = throttle(checkItems);
+        effecientCheck = throttle(checkItems, 50);
 
     return {
 

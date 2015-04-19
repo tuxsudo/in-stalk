@@ -96,7 +96,7 @@
                 }
             });
         },
-            effecientCheck = $$$es6$element$inviewport$$throttle(checkItems);
+            effecientCheck = $$$es6$element$inviewport$$throttle(checkItems, 50);
 
         return {
 
