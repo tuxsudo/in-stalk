@@ -2,11 +2,13 @@ export default (function() {
 
     var isWatching = false,
 
+        initialized = false,
+
         // watched elements
         watchedItems = [],
 
         // standard events to listen for (at window level)
-        standardEvents = ['scroll', 'hashchange', 'touchend', 'resize'],
+        standardEvents = ['load', 'scroll', 'hashchange', 'touchend', 'resize'],
 
         // watch (at window level) for these custom events that may also change if an element is in the view port
         // typically events causing elements display to toggle.
@@ -49,22 +51,31 @@ export default (function() {
             standardEvents.concat(customEvents).forEach( ev => window.removeEventListener(ev, checkItems) );
         },
 
+        // check / update the status of an element
+        checkItem = function(item) {
+            var inview = isInView( item.element );
+
+            if(item.status ==='in' && !inview ) {
+                broadcastElementStatus(item.element, 'out');
+                item.status = 'out';
+
+            } else if(item.status==='out' && inview ) {
+                broadcastElementStatus(item.element, 'in');
+                item.status = 'in';
+            
+            } else if(item.status==='new') {
+                item.status = inview ? 'in' : 'out';
+                
+                if(inview) {
+                    broadcastElementStatus(item.element, 'in');
+                }
+            }
+        },
+
         // what to execute while scrolling / moving viewport location
         checkItems = function() {
-
-            watchedItems.forEach( function( item ) {
-
-                if(item.status ==='in' && !isInView( item.element ) ) {
-                    broadcastElementStatus(item.element, 'out');
-                    item.status = 'out';
-
-                } else if(item.status==='out' && isInView(item.element) ) {
-                    broadcastElementStatus(item.element, 'in');
-                    item.status = 'in';
-                }
-
-            });
-
+            initialized = true;
+            watchedItems.forEach( checkItem );
         };
 
 
@@ -75,11 +86,15 @@ export default (function() {
         add: function(element) {
             var config = {
                 element: element,
-                status: isInView(element) ? 'in' : 'out'
+                status: 'new'
             };
 
             watchedItems.push(config);
-            broadcastElementStatus( element, config.status );
+
+            if(initialized) {
+                checkItem( config );
+            }
+
             registerWatchListChange();
 
         },
