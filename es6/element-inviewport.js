@@ -123,7 +123,9 @@ export default (function() {
         	detachListener();
         	customEvents = customEvents.filter(ev=>ev!==eventName);
 			registerWatchListChange();
-        }
+        },
+
+        check: checkItems
 
     };
 

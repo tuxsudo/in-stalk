@@ -126,7 +126,9 @@
                     return ev !== eventName;
                 });
                 registerWatchListChange();
-            }
+            },
+
+            check: checkItems
 
         };
     })();
