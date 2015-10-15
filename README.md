@@ -1,6 +1,33 @@
-# Element In-Viewport
+# In-Stalk
 
-Fire events when elements enter and exit the view port.
+Event notifications when elements enter and exit the view port.
+
+
+
+## Event Notification Names
+
+### in-stalk.in
+Element entered the viewport
+
+### in-stalk.out
+Element exited the viewport
+
+
+### in-stalk.in.bottom
+Element entered the viewport from bottom (ie: scrolling down on page)
+
+
+### in-stalk.out.bottom
+Element exited the viewport from bottom (ie: scrolling up on page)
+
+
+### in-stalk.in.top
+Element entered the viewport from top (ie: scrolling up on page)
+
+### in-stalk.out.top
+Element exited the viewport from top (ie: scrolling down on page)
+
+
 
 
 ## Usage -- Source ES6 Module
