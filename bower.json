@@ -1,16 +1,15 @@
 {
-  "name": "element-inviewport",
-  "version": "1.0.0",
-  "homepage": "https://github.com/TuxSudo/element-inviewport",
+  "name": "in-stalk",
+  "version": "2.0.0",
+  "homepage": "https://github.com/tuxsudo/in-stalk.git",
   "authors": [
     "Jared Anderson <jared@tuxsudo.com>"
   ],
   "description": "Fire events when elements enter and exit the view port.",
-  "main": "es5/element-inviewport.min.js",
+  "main": "dist/in-stalk.min.js",
   "moduleType": [
     "es6",
-    "globals",
-    "node"
+    "globals"
   ],
   "keywords": [
     "viewport",
