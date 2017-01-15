@@ -1,11 +1,12 @@
 {
   "name": "in-stalk",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Fires events with element enters/exits viewport",
-  "main": "index.js",
-  "jsnext:main": "index.js",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.es.js",
+  "jsnext:main": "dist/bundle.es.js",
   "scripts": {
-    "build": "rollup -f iife lib/build.js | babel | uglifyjs -emc > dist/in-stalk.min.js"
+    "build": "rollup -c && rollup -c rollup.bower.config.js"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,14 @@
   },
   "homepage": "https://github.com/tuxsudo/in-stalk",
   "devDependencies": {
-    "babel": "^5.8.23",
-    "rollup": "^0.19.1",
+    "babel-cli": "^6.18.0",
+    "babel-plugin-external-helpers": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1",
     "uglifyjs": "^2.4.10"
   },
   "dependencies": {
