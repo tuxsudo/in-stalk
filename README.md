@@ -29,6 +29,22 @@ Element exited the viewport from top (ie: scrolling down on page)
 
 
 
+### in-stalk.bottom.enter
+Element bottom entered the viewport from bottom (ie: scrolling up on page)
+
+
+### in-stalk.bottom.exit
+Element bottom exited the viewport from bottom (ie: scrolling down on page)
+
+
+### in-stalk.top.enter
+Element top entered the viewport from top (ie: scrolling down on page)
+
+### in-stalk.top.exit
+Element top exited the viewport from top (ie: scrolling up on page)
+
+
+
 
 ## Usage -- Source ES6 Module
 
@@ -80,5 +96,3 @@ Element exited the viewport from top (ie: scrolling down on page)
 
 
 	inStalk.remove(element);
-
-

@@ -329,6 +329,35 @@ document.addEventListener('DOMContentLoaded', function(){
 
   });
 
+  [].forEach.call( document.querySelectorAll('img:nth-child(70)' ), function(img){
+
+      img.addEventListener('in-stalk.top.enter', function(){
+          img.classList.add('active');
+      });
+
+      img.addEventListener('in-stalk.top.exit', function(){
+          img.classList.remove('active');
+      });
+
+
+      inStalk.add(img);
+
+  });
+
+  [].forEach.call( document.querySelectorAll('img:nth-child(77)' ), function(img){
+
+      img.addEventListener('in-stalk.bottom.enter', function(){
+          img.classList.add('active');
+      });
+
+      img.addEventListener('in-stalk.bottom.exit', function(){
+          img.classList.remove('active');
+      });
+
+
+      inStalk.add(img);
+
+  });
 
 
 });

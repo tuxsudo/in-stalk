@@ -1,5 +1,7 @@
 import emit from 'dom-emit/from';
 import isInView from './lib/in-view.js';
+import topisInView from './lib/top-in-view.js';
+import bottomisInView from './lib/bottom-in-view.js';
 
 
 let isWatching = false,
@@ -46,6 +48,17 @@ let isWatching = false,
 	// check / update the status of an element
 	checkItem = function(item) {
 		var inview = isInView( item.element );
+		var topAction = topisInView( item.element );
+		var bottomAction = bottomisInView( item.element );
+
+		if(item.top !== topAction) {
+			item.top = topAction;
+			emit(item.element, "in-stalk.top." + topAction);
+		}
+		if(item.bottom !== bottomAction) {
+			item.bottom = bottomAction;
+			emit(item.element, "in-stalk.bottom." + bottomAction);
+		}
 
 		if(item.status ==='in' && !inview ) {
 			emit(item.element, "in-stalk.out");
@@ -59,6 +72,8 @@ let isWatching = false,
 
 		} else if(item.status==='new') {
 			item.status = inview ? 'in' : 'out';
+			item.top = topAction;
+			item.bottom = bottomAction;
 
 			if(inview) {
 				emit(item.element, "in-stalk.in");
@@ -122,6 +137,3 @@ export default {
 	check: checkItems
 
 };
-
-
-
