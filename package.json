@@ -1,6 +1,6 @@
 {
   "name": "in-stalk",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Fires events with element enters/exits viewport",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.es.js",
@@ -31,10 +31,5 @@
   },
   "dependencies": {
     "dom-emit": "^1.1.2"
-  },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
   }
 }
